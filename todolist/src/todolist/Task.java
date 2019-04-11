@@ -2,11 +2,11 @@ package todolist;
 
 public class Task 
 {
-	String name;
-	String desc;
-	int status;
-	int priority;
-	String date;
+	private String name;
+	private String desc;
+	private int status;
+	private int priority;
+	private String date;
 	
 	Task()
 	{

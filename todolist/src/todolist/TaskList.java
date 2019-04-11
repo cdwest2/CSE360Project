@@ -1,7 +1,13 @@
 package todolist;
-
+import java.util.*;
 //Will manage the list of tasks
 public class TaskList 
 {
-	// testing
+	private ArrayList<Task> list;
+	
+	void add(Task task)
+	{
+		list.add(task);
+	}
+	
 }
