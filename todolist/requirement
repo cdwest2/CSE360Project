@@ -1,0 +1,27 @@
+1st part
+User guide, --- (outline provide), 	due on April 4th
+
+Requirement:
+	Code is going submitted, 	deadline April 4th 
+	This program is going to have 
+•	GUI – usability
+•	To Do List Unlimited	2019
+o	Items:
+	Description		- unique
+	Priority numbers	- unique
+	Due date
+	Status
+•	Not started
+•	In progress	- date started
+•	Finish		- date done
+Insert / add 
+Delete / remove
+Reorder
+Change/ update
+
+Display mylist 	- name, priority, due date, description
+
+Print report (text file available to see)
+Save
+Restore
+
