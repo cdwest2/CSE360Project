@@ -7,7 +7,7 @@ public class TaskList
 	
 	void insert(Task task)
 	{
-		list.add(task);
+		tasks.add(task);
 	}
 	
 }
