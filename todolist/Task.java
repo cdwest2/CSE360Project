@@ -14,10 +14,10 @@ public class Task
 		desc = "";
 		status = 0;
 		priority = 0;
-		date = "";
+		date = 0;
 	}
 	
-	Task(String nameI, String descI, int statusI, int priorityI, String dateI)
+	Task(String nameI, String descI, int statusI, int priorityI, int dateI)
 	{
 		name = nameI;
 		desc = descI;
