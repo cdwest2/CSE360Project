@@ -3,9 +3,9 @@ import java.util.*;
 //Will manage the list of tasks
 public class TaskList 
 {
-	private ArrayList<Task> list;
+	private ArrayList<Task> tasks;
 	
-	void add(Task task)
+	void insert(Task task)
 	{
 		list.add(task);
 	}
