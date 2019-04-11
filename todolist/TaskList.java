@@ -3,6 +3,11 @@ import java.util.*;
 //Will manage the list of tasks
 public class TaskList 
 {
-	//will be a linked list
+	private ArrayList<Task> list;
+	
+	void add(Task task)
+	{
+		list.add(task);
+	}
 	
 }
