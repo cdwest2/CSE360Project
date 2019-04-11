@@ -26,5 +26,54 @@ public class Task
 		date = dateI;
 	}
 	
+	String getName()
+	{
+		return name;
+	}
+	
+	void setName(String sName)
+	{
+		name = sName;
+	}
+	
+	String getDesc()
+	{
+		return desc;
+	}
+	
+	void setDesc(String sDesc)
+	{
+		desc = sDesc;
+	}
+	
+	Int getStatus()
+	{
+		return status;
+	}
+	
+	void setStatus(Int sStatus)
+	{
+		status = sStatus;
+	}
+	
+	Int getPriority()
+	{
+		return priority;
+	}
+	
+	void setPriority(Int sPriority)
+	{
+		priority = sPriority;
+	}
+	
+	Int getDate()
+	{
+		return date;
+	}
+	
+	void setDate(Int sDate)
+	{
+		date = sDate;
+	}
 
 }
