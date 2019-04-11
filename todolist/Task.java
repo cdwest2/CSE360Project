@@ -6,7 +6,7 @@ public class Task
 	private String desc;
 	private int status;
 	private int priority;
-	private String date;
+	private int date;
 	
 	Task()
 	{
