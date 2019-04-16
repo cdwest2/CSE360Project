@@ -46,32 +46,32 @@ public class Task
 		desc = sDesc;
 	}
 	
-	Int getStatus()
+	int getStatus()
 	{
 		return status;
 	}
 	
-	void setStatus(Int sStatus)
+	void setStatus(int sStatus)
 	{
 		status = sStatus;
 	}
 	
-	Int getPriority()
+	int getPriority()
 	{
 		return priority;
 	}
 	
-	void setPriority(Int sPriority)
+	void setPriority(int sPriority)
 	{
 		priority = sPriority;
 	}
 	
-	Int getDate()
+	int getDate()
 	{
 		return date;
 	}
 	
-	void setDate(Int sDate)
+	void setDate(int sDate)
 	{
 		date = sDate;
 	}
