@@ -9,6 +9,11 @@ public class TaskList
 		tasks.add(task);
 	}
 	
+	void remove(int index)
+	{
+		tasks.remove(index);
+	}
+	
 	int size()
 	{
 		return tasks.size();
