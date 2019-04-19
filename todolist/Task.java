@@ -4,20 +4,20 @@ public class Task
 {
 	private String name;
 	private String desc;
+	private String date;
 	private int status;
 	private int priority;
-	private int date;
 	
 	Task()
 	{
 		name = "";
 		desc = "";
+		date = "";
 		status = 0;
 		priority = 0;
-		date = 0;
 	}
 	
-	Task(String nameI, String descI, int statusI, int priorityI, int dateI)
+	Task(String nameI, String descI, int statusI, int priorityI, String dateI)
 	{
 		name = nameI;
 		desc = descI;
@@ -66,12 +66,12 @@ public class Task
 		priority = sPriority;
 	}
 	
-	int getDate()
+	String getDate()
 	{
 		return date;
 	}
 	
-	void setDate(int sDate)
+	void setDate(String sDate)
 	{
 		date = sDate;
 	}
