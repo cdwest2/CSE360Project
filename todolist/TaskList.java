@@ -2,7 +2,7 @@ package todolist;
 import java.util.*;
 public class TaskList 
 {
-	private ArrayList<Task> tasks = new ArrayList<Task>();
+	public ArrayList<Task> tasks = new ArrayList<Task>();
 	
 	void add(Task task)
 	{

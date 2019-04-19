@@ -3,19 +3,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.BoxLayout;
+import javax.swing.border.LineBorder;
 
 public class ToDoList {
 	
 	static Task selectedTask = new Task();
+	static TaskList taskList = new TaskList();
+	char sortingMethod;
 	
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
-		selectedTask.setDate("11 20 1998");
-		selectedTask.setDesc("This is my best try");
-		selectedTask.setName("Task Attempt");
+		selectedTask.setDate("69 69 4200");
+		selectedTask.setDesc("THIS IS JUST TEST DATA");
+		selectedTask.setName("::TEST NAME::");
 		selectedTask.setPriority(1);
 		
+		taskList.add(selectedTask);
+		
 		initializeHome();
+		//showErrorMessage("fake error that is now super long and has a super long string to see if its cenetered");
 	}
 	
 	static Task addPanel()
@@ -42,7 +48,7 @@ public class ToDoList {
 		desc.setFont(new Font("Arial", Font.PLAIN, 40));
 		JTextField descTextField = new JTextField("Short Description");
 		descTextField.setFont(new Font("Arial", Font.PLAIN, 30));
-		descTextField.setPreferredSize(new Dimension(635, 100));
+		descTextField.setPreferredSize(new Dimension(635, 50));
 		descPanel.add(desc);
 		descPanel.add(descTextField);
 		
@@ -57,7 +63,7 @@ public class ToDoList {
 		
 		JLabel date = new JLabel("          DATE: ");
 		date.setFont(new Font("Arial", Font.PLAIN, 40));
-		JTextField dateTextField = new JTextField("MM DD YYYY");
+		JTextField dateTextField = new JTextField("YYYY MM DD");
 		dateTextField.setFont(new Font("Arial", Font.PLAIN, 30));
 		dateTextField.setPreferredSize(new Dimension(400, 50));
 		priorityDatePanel.add(date);
@@ -83,6 +89,8 @@ public class ToDoList {
         		newTask.setPriority(Integer.parseInt(text));
         		
         		newTask.setStatus(0);
+        		
+        		taskList.add(newTask);
         	}
         });
 		
@@ -95,10 +103,11 @@ public class ToDoList {
 		addFrame.add(BorderLayout.SOUTH, addTaskButton);
 		addFrame.setLocationRelativeTo(null);
 		addFrame.setVisible(true);
+		
 		return newTask;
 	}
 	
-	static Task editPanel(Task task)
+	static Task editPanel(Task task, int index)
 	{
 		JFrame editFrame = new JFrame("EDIT TASK");
 		editFrame.setSize(1100, 500);
@@ -120,7 +129,7 @@ public class ToDoList {
 		desc.setFont(new Font("Arial", Font.PLAIN, 40));
 		JTextField descTextField = new JTextField(task.getDesc());
 		descTextField.setFont(new Font("Arial", Font.PLAIN, 30));
-		descTextField.setPreferredSize(new Dimension(635, 100));
+		descTextField.setPreferredSize(new Dimension(635, 50));
 		descPanel.add(desc);
 		descPanel.add(descTextField);
 		
@@ -163,6 +172,9 @@ public class ToDoList {
         		task.setPriority(Integer.parseInt(text));
         		
         		task.setStatus(0);
+        		
+        		taskList.remove(index);
+        		taskList.add(task);
         	}
         });
 		
@@ -179,9 +191,31 @@ public class ToDoList {
 		return task;
 	}
 	
+	static void showErrorMessage(String msg)
+	{
+		JFrame errorFrame = new JFrame("ERROR");
+		errorFrame.setSize(1100, 500);
+		
+		
+		String errorText = ("Sorry, you have encountered an error:");
+		JLabel errorLabel1 = new JLabel(errorText);
+		errorLabel1.setPreferredSize(new Dimension(204, 60));
+        errorLabel1.setFont(new Font("Arial", Font.PLAIN, 40));
+        
+		JLabel errorLabel = new JLabel(msg);
+		errorLabel.setPreferredSize(new Dimension(204, 60));
+        errorLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+        
+		errorFrame.add(BorderLayout.PAGE_START, errorLabel1);
+		errorFrame.add(BorderLayout.CENTER, errorLabel);
+		
+		errorFrame.setLocationRelativeTo(null);
+		errorFrame.setVisible(true);
+	}
+	
 	static void initializeHome()
 	{
-		//Creating the Frame
+		//Creating the main Frame element
         JFrame frame = new JFrame("To-Do List Unlimited 2019");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1920, 1080);
@@ -190,36 +224,63 @@ public class ToDoList {
         JMenuBar topMenuBar = new JMenuBar();
         topMenuBar.setLayout( new FlowLayout(FlowLayout.LEFT, 20, 0) );
         
+        //OPTIONS menu
         JMenu fileButton = new JMenu("OPTIONS");
         fileButton.setPreferredSize(new Dimension(204, 60));
         fileButton.setFont(new Font("Arial", Font.PLAIN, 40));
         
+        //reset menu option
+        JMenuItem newList = new JMenuItem("New");
+        newList.setPreferredSize(new Dimension(200, 50));
+        newList.setFont(new Font("Arial", Font.PLAIN, 30));
+        fileButton.add(newList);
+        
+        //save menu option
         JMenuItem save = new JMenuItem("Save");
         save.setPreferredSize(new Dimension(200, 50));
         save.setFont(new Font("Arial", Font.PLAIN, 30));
+        fileButton.addSeparator();
         fileButton.add(save);
         
-        JMenuItem restore = new JMenuItem("Restore");
-        restore.setPreferredSize(new Dimension(200, 50));
-        restore.setFont(new Font("Arial", Font.PLAIN, 30));
-        fileButton.addSeparator();
-        fileButton.add(restore);
-        
+        //print menu option
         JMenuItem print = new JMenuItem("Print");
         print.setPreferredSize(new Dimension(200, 50));
         print.setFont(new Font("Arial", Font.PLAIN, 30));
         fileButton.addSeparator();
         fileButton.add(print);
         
+        //sorting sub-menu option
+        JMenu sortingButton = new JMenu("Sorting Type");
+        sortingButton.setPreferredSize(new Dimension(200, 50));
+        sortingButton.setFont(new Font("Arial", Font.PLAIN, 30));
+        
+        //name sorting menu option
+        JMenuItem Name = new JMenuItem("Name");
+        Name.setPreferredSize(new Dimension(130, 50));
+        Name.setFont(new Font("Arial", Font.PLAIN, 30));
+        sortingButton.add(Name);
+        
+        //date sorting menu option
+        JMenuItem Date = new JMenuItem("Date");
+        Date.setPreferredSize(new Dimension(130, 50));
+        Date.setFont(new Font("Arial", Font.PLAIN, 30));
+        sortingButton.add(Date);
+        
+        //priority sorting menu option
+        JMenuItem Priority = new JMenuItem("Priority");
+        Priority.setPreferredSize(new Dimension(130, 50));
+        Priority.setFont(new Font("Arial", Font.PLAIN, 30));
+        sortingButton.add(Priority);
+        
         //Add File Button to Top Menu Bar
-        //topMenuBar.add(Box.createHorizontalGlue());
         topMenuBar.add(fileButton);
         
-        //Create Bottom Panel and Task Buttons
+        //Create Bottom bar and set its layout
         JPanel bottomBar = new JPanel();
-        FlowLayout fLay = new FlowLayout(FlowLayout.LEADING, 100, 10);
+        FlowLayout fLay = new FlowLayout(FlowLayout.LEADING, 95, 10);
         bottomBar.setLayout(fLay);
         
+        //add button
         JButton add = new JButton("ADD");
         add.setPreferredSize(new Dimension(200, 50));
         add.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -229,38 +290,25 @@ public class ToDoList {
         	}
         });
         
+        //edit button
         JButton edit = new JButton("EDIT");
         edit.setPreferredSize(new Dimension(200, 50));
         edit.setFont(new Font("Arial", Font.PLAIN, 30));
         edit.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		selectedTask = editPanel(selectedTask);
+        		selectedTask = editPanel(selectedTask, taskList.tasks.indexOf(selectedTask));
         	}
         });
         
+        //delete button
         JButton delete = new JButton("DELETE");
         delete.setPreferredSize(new Dimension(200, 50));
         delete.setFont(new Font("Arial", Font.PLAIN, 30));
-        //////////////////////////////
-        JMenu sortingButton = new JMenu("Sorting Type");
-        sortingButton.setPreferredSize(new Dimension(200, 50));
-        sortingButton.setFont(new Font("Arial", Font.PLAIN, 30));
-        
-        JMenuItem Name = new JMenuItem("Name");
-        Name.setPreferredSize(new Dimension(130, 50));
-        Name.setFont(new Font("Arial", Font.PLAIN, 30));
-        sortingButton.add(Name);
-        
-        JMenuItem Date = new JMenuItem("Date");
-        Date.setPreferredSize(new Dimension(130, 50));
-        Date.setFont(new Font("Arial", Font.PLAIN, 30));
-        sortingButton.add(Date);
-        
-        JMenuItem Priority = new JMenuItem("Priority");
-        Priority.setPreferredSize(new Dimension(130, 50));
-        Priority.setFont(new Font("Arial", Font.PLAIN, 30));
-        sortingButton.add(Priority);
-        ///////////////////////////
+        edit.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		//Delete code
+        	}
+        });
         
         //Add Task Buttons to Bottom Panel
         bottomBar.add(add);
@@ -269,16 +317,43 @@ public class ToDoList {
         fileButton.addSeparator();
         fileButton.add(sortingButton);
         
-        //Middle text area in the middle
-        JTextArea ta = new JTextArea();
-        
         //Selected Task panel area
         JPanel rightBackground = new JPanel();
         rightBackground.setBackground(Color.lightGray);
         rightBackground.setOpaque(true);
         rightBackground.setPreferredSize(new Dimension(900, 10));
         
-        frame.add(BorderLayout.CENTER, ta);
+        JLabel taskName = new JLabel(selectedTask.getName());
+        JLabel taskDate = new JLabel(selectedTask.getDate());
+        JLabel taskPrio = new JLabel(String.valueOf(selectedTask.getPriority()));
+        JLabel taskDesc = new JLabel(selectedTask.getDesc());
+        
+        rightBackground.add(taskName);
+        rightBackground.add(taskDate);
+        rightBackground.add(taskPrio);
+        rightBackground.add(taskDesc);
+        
+        DefaultListModel listModel = new DefaultListModel();
+        JList list = new JList();
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        list.setVisibleRowCount(-1);
+        
+        for(int i = 0; i < taskList.size(); i++)
+        {
+        	listModel.addElement(taskList.get(i).getName());
+        }
+        
+        list = new JList(listModel);
+        
+        JScrollPane listScroller = new JScrollPane(list);
+        list.setPreferredSize(new Dimension(200, 50));
+        list.setFont(new Font("Arial", Font.PLAIN, 30));
+        listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        listScroller.setViewportBorder(new LineBorder(Color.BLACK));
+        listScroller.getViewport().add(list);
+        
+        frame.add(BorderLayout.CENTER, listScroller);
         frame.add(BorderLayout.SOUTH, bottomBar);
         frame.add(BorderLayout.NORTH, topMenuBar);
         frame.add(BorderLayout.EAST, rightBackground);
