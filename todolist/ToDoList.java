@@ -188,28 +188,31 @@ public class ToDoList {
 
         //Creating the Top Menu Bar and File Button
         JMenuBar topMenuBar = new JMenuBar();
+        topMenuBar.setLayout( new FlowLayout(FlowLayout.LEFT, 20, 0) );
         
         JMenu fileButton = new JMenu("OPTIONS");
-        fileButton.setPreferredSize(new Dimension(190, 60));
+        fileButton.setPreferredSize(new Dimension(204, 60));
         fileButton.setFont(new Font("Arial", Font.PLAIN, 40));
         
         JMenuItem save = new JMenuItem("Save");
-        save.setPreferredSize(new Dimension(190, 50));
+        save.setPreferredSize(new Dimension(200, 50));
         save.setFont(new Font("Arial", Font.PLAIN, 30));
         fileButton.add(save);
         
         JMenuItem restore = new JMenuItem("Restore");
-        restore.setPreferredSize(new Dimension(190, 50));
+        restore.setPreferredSize(new Dimension(200, 50));
         restore.setFont(new Font("Arial", Font.PLAIN, 30));
+        fileButton.addSeparator();
         fileButton.add(restore);
         
         JMenuItem print = new JMenuItem("Print");
-        print.setPreferredSize(new Dimension(190, 50));
+        print.setPreferredSize(new Dimension(200, 50));
         print.setFont(new Font("Arial", Font.PLAIN, 30));
+        fileButton.addSeparator();
         fileButton.add(print);
         
         //Add File Button to Top Menu Bar
-        topMenuBar.add(Box.createHorizontalGlue());
+        //topMenuBar.add(Box.createHorizontalGlue());
         topMenuBar.add(fileButton);
         
         //Create Bottom Panel and Task Buttons
@@ -239,22 +242,22 @@ public class ToDoList {
         delete.setPreferredSize(new Dimension(200, 50));
         delete.setFont(new Font("Arial", Font.PLAIN, 30));
         //////////////////////////////
-        JMenu sortingButton = new JMenu("Sorting Method");
-        sortingButton.setPreferredSize(new Dimension(300, 60));
-        sortingButton.setFont(new Font("Arial", Font.PLAIN, 40));
+        JMenu sortingButton = new JMenu("Sorting Type");
+        sortingButton.setPreferredSize(new Dimension(200, 50));
+        sortingButton.setFont(new Font("Arial", Font.PLAIN, 30));
         
         JMenuItem Name = new JMenuItem("Name");
-        Name.setPreferredSize(new Dimension(190, 50));
+        Name.setPreferredSize(new Dimension(130, 50));
         Name.setFont(new Font("Arial", Font.PLAIN, 30));
         sortingButton.add(Name);
         
         JMenuItem Date = new JMenuItem("Date");
-        Date.setPreferredSize(new Dimension(190, 50));
+        Date.setPreferredSize(new Dimension(130, 50));
         Date.setFont(new Font("Arial", Font.PLAIN, 30));
         sortingButton.add(Date);
         
-        JMenuItem Priority = new JMenuItem("Print");
-        Priority.setPreferredSize(new Dimension(190, 50));
+        JMenuItem Priority = new JMenuItem("Priority");
+        Priority.setPreferredSize(new Dimension(130, 50));
         Priority.setFont(new Font("Arial", Font.PLAIN, 30));
         sortingButton.add(Priority);
         ///////////////////////////
@@ -263,7 +266,8 @@ public class ToDoList {
         bottomBar.add(add);
         bottomBar.add(edit);
         bottomBar.add(delete);
-        topMenuBar.add(sortingButton);
+        fileButton.addSeparator();
+        fileButton.add(sortingButton);
         
         //Middle text area in the middle
         JTextArea ta = new JTextArea();

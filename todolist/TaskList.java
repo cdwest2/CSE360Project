@@ -57,7 +57,7 @@ public class TaskList
 					//sort by date in ascending order
 					public int compare(Task t1, Task t2)
 					{
-						return Integer.valueOf(t1.getDate()).compareTo(t2.getDate());
+						return t1.getDate().compareTo(t2.getDate());
 					}
 				
 				});
