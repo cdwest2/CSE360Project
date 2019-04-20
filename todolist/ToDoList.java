@@ -4,25 +4,28 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.BoxLayout;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class ToDoList {
 	
+	static JFrame frame;
+	static JPanel leftPanel, rightPanel;
 	static Task selectedTask = new Task();
+	//static Task testTask = new Task();
 	static TaskList taskList = new TaskList();
 	char sortingMethod;
 	
 	public static void main(String[] args)
 	{
-		selectedTask.setDate("69 69 4200");
-		selectedTask.setDesc("THIS IS JUST TEST DATA");
-		selectedTask.setName("::TEST NAME::");
-		selectedTask.setPriority(1);
-		
-		taskList.add(selectedTask);
-		
-		initializeHome();
-		//showErrorMessage("fake error that is now super long and has a super long string to see if its cenetered");
+		frame = initializeHome();
 	}
+	
+	
 	
 	static Task addPanel()
 	{
@@ -91,6 +94,9 @@ public class ToDoList {
         		newTask.setStatus(0);
         		
         		taskList.add(newTask);
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
         	}
         });
 		
@@ -175,6 +181,9 @@ public class ToDoList {
         		
         		taskList.remove(index);
         		taskList.add(task);
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
         	}
         });
 		
@@ -197,14 +206,11 @@ public class ToDoList {
 		errorFrame.setSize(1100, 500);
 		
 		
-		String errorText = ("Sorry, you have encountered an error:");
-		JLabel errorLabel1 = new JLabel(errorText);
-		errorLabel1.setPreferredSize(new Dimension(204, 60));
-        errorLabel1.setFont(new Font("Arial", Font.PLAIN, 40));
+		JLabel errorLabel1 = new JLabel("Sorry, you have encountered an error:");
+		errorLabel1.setFont(new Font("Arial", Font.PLAIN, 40));
         
 		JLabel errorLabel = new JLabel(msg);
-		errorLabel.setPreferredSize(new Dimension(204, 60));
-        errorLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+		errorLabel.setFont(new Font("Arial", Font.PLAIN, 40));
         
 		errorFrame.add(BorderLayout.PAGE_START, errorLabel1);
 		errorFrame.add(BorderLayout.CENTER, errorLabel);
@@ -213,10 +219,149 @@ public class ToDoList {
 		errorFrame.setVisible(true);
 	}
 	
-	static void initializeHome()
+	static JList getTaskListData()
+	{
+		DefaultListModel listModel = new DefaultListModel();
+        JList list = new JList();
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        list.setVisibleRowCount(-1);
+        
+        for(int i = 0; i < taskList.size(); i++)
+        {
+        	listModel.addElement("  " + (i+1) + ") " + taskList.get(i).getName());
+        }
+        
+        list = new JList(listModel);
+        list.setFixedCellHeight(100);
+        
+        return list;
+	}
+	
+	static void refreshLeftPanel()
+	{
+		leftPanel.removeAll();
+		leftPanel.repaint();
+		leftPanel.revalidate();
+		
+		leftPanel.add(updateLeftPanel());
+		leftPanel.repaint();
+		leftPanel.revalidate();
+	}
+	
+	static JPanel updateLeftPanel()
+	{
+		JPanel leftBackground = new JPanel();
+		leftBackground.setLayout(new BorderLayout());
+		
+		JList list = getTaskListData();
+        
+        list.addListSelectionListener(new ListSelectionListener() {
+        	public void valueChanged(ListSelectionEvent e) {
+        		if (e.getValueIsAdjusting())
+        		{
+        			selectedTask = taskList.get(list.getSelectedIndex());
+        			refreshRightPanel();
+        		}
+        	}
+        });
+        
+        JScrollPane listScroller = new JScrollPane(list);
+        list.setPreferredSize(new Dimension(200, 50));
+        list.setFont(new Font("Arial", Font.PLAIN, 30));
+        listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        listScroller.setViewportBorder(new LineBorder(Color.BLACK));
+        listScroller.getViewport().add(list);
+		
+		leftBackground.add(listScroller, BorderLayout.CENTER);
+		
+		return leftBackground;
+	}
+	
+	static void refreshRightPanel()
+	{
+		rightPanel.removeAll();
+		rightPanel.repaint();
+		rightPanel.revalidate();
+		
+		rightPanel.add(updateRightPanel());
+		rightPanel.repaint();
+		rightPanel.revalidate();
+	}
+	
+	static JPanel updateRightPanel()
+	{
+		JPanel rightBackground = new JPanel();
+        rightBackground.setBackground(Color.lightGray);
+        rightBackground.setOpaque(true);
+        rightBackground.setPreferredSize(new Dimension(900, 10));
+        
+        JLabel emptyList = new JLabel(" Please enter a task to get started.");
+        emptyList.setFont(new Font("Arial", Font.PLAIN, 50));
+        
+        JLabel taskName = new JLabel("Name: " + selectedTask.getName());
+        taskName.setFont(new Font("Arial", Font.PLAIN, 40));
+        JLabel taskDate = new JLabel("Date: " + selectedTask.getDate());
+        taskDate.setFont(new Font("Arial", Font.PLAIN, 40));
+        JLabel taskPrio = new JLabel("Priority: " + String.valueOf(selectedTask.getPriority()));
+        taskPrio.setFont(new Font("Arial", Font.PLAIN, 40));
+        JLabel taskDesc = new JLabel("Description: " + selectedTask.getDesc());
+        taskDesc.setFont(new Font("Arial", Font.PLAIN, 40));
+        
+        if (selectedTask.getName() == "")
+        {
+        	rightBackground.setLayout(new BorderLayout());
+        	rightBackground.add(emptyList, BorderLayout.NORTH);
+        }
+        else
+        {
+            rightBackground.setLayout(new BoxLayout(rightBackground, BoxLayout.PAGE_AXIS));
+            rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
+        	rightBackground.add(taskName);
+        	rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
+        	rightBackground.add(taskDesc);
+        	rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
+            rightBackground.add(taskPrio);
+            rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
+            rightBackground.add(taskDate);
+        }
+        
+        
+        return rightBackground;
+	}
+	
+	static void print()
+	{
+		File file = new File("D:/data/report.txt");
+
+        FileWriter wr;
+        BufferedWriter bw;
+
+        try {
+            int number = taskList.size();
+            wr = new FileWriter(file);
+            bw = new BufferedWriter(wr);
+
+            for(int i =0; i < number; i++) 
+            {
+                String out = taskList.get(i).printString();
+                bw.write(out);
+                bw.newLine();
+            }
+            bw.close();
+            wr.close();
+        }
+        catch (IOException e)
+        {
+            System.err.println("There is something wrong, file couldn't create");
+            e.printStackTrace();
+        }
+	}
+	
+	static JFrame initializeHome()
 	{
 		//Creating the main Frame element
-        JFrame frame = new JFrame("To-Do List Unlimited 2019");
+		JFrame frame = new JFrame ("ToDo List Unlimited 2019");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1920, 1080);
 
@@ -227,13 +372,24 @@ public class ToDoList {
         //OPTIONS menu
         JMenu fileButton = new JMenu("OPTIONS");
         fileButton.setPreferredSize(new Dimension(204, 60));
-        fileButton.setFont(new Font("Arial", Font.PLAIN, 40));
+        fileButton.setFont(new Font("Arial", Font.BOLD, 40));
         
         //reset menu option
         JMenuItem newList = new JMenuItem("New");
         newList.setPreferredSize(new Dimension(200, 50));
         newList.setFont(new Font("Arial", Font.PLAIN, 30));
         fileButton.add(newList);
+        newList.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                taskList.tasks.clear();
+                selectedTask = new Task();
+                
+                refreshLeftPanel();
+                refreshRightPanel();
+            }
+        });
         
         //save menu option
         JMenuItem save = new JMenuItem("Save");
@@ -246,6 +402,11 @@ public class ToDoList {
         JMenuItem print = new JMenuItem("Print");
         print.setPreferredSize(new Dimension(200, 50));
         print.setFont(new Font("Arial", Font.PLAIN, 30));
+        print.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                print();
+            }
+        });
         fileButton.addSeparator();
         fileButton.add(print);
         
@@ -287,8 +448,10 @@ public class ToDoList {
         add.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		selectedTask = addPanel();
+        		
         	}
         });
+        
         
         //edit button
         JButton edit = new JButton("EDIT");
@@ -304,11 +467,22 @@ public class ToDoList {
         JButton delete = new JButton("DELETE");
         delete.setPreferredSize(new Dimension(200, 50));
         delete.setFont(new Font("Arial", Font.PLAIN, 30));
-        edit.addActionListener(new ActionListener() {
+        delete.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		//Delete code
+        		int index = taskList.tasks.indexOf(selectedTask);
+        		taskList.remove(taskList.tasks.indexOf(selectedTask));
+        		
+        		if (taskList.size() != 0)
+        			selectedTask = taskList.get(index);
+        		else
+        			selectedTask = new Task();
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
         	}
         });
+        
+        
         
         //Add Task Buttons to Bottom Panel
         bottomBar.add(add);
@@ -317,47 +491,17 @@ public class ToDoList {
         fileButton.addSeparator();
         fileButton.add(sortingButton);
         
-        //Selected Task panel area
-        JPanel rightBackground = new JPanel();
-        rightBackground.setBackground(Color.lightGray);
-        rightBackground.setOpaque(true);
-        rightBackground.setPreferredSize(new Dimension(900, 10));
+        rightPanel = updateRightPanel();
+        leftPanel = updateLeftPanel();
         
-        JLabel taskName = new JLabel(selectedTask.getName());
-        JLabel taskDate = new JLabel(selectedTask.getDate());
-        JLabel taskPrio = new JLabel(String.valueOf(selectedTask.getPriority()));
-        JLabel taskDesc = new JLabel(selectedTask.getDesc());
         
-        rightBackground.add(taskName);
-        rightBackground.add(taskDate);
-        rightBackground.add(taskPrio);
-        rightBackground.add(taskDesc);
-        
-        DefaultListModel listModel = new DefaultListModel();
-        JList list = new JList();
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        list.setVisibleRowCount(-1);
-        
-        for(int i = 0; i < taskList.size(); i++)
-        {
-        	listModel.addElement(taskList.get(i).getName());
-        }
-        
-        list = new JList(listModel);
-        
-        JScrollPane listScroller = new JScrollPane(list);
-        list.setPreferredSize(new Dimension(200, 50));
-        list.setFont(new Font("Arial", Font.PLAIN, 30));
-        listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        listScroller.setViewportBorder(new LineBorder(Color.BLACK));
-        listScroller.getViewport().add(list);
-        
-        frame.add(BorderLayout.CENTER, listScroller);
+        frame.add(BorderLayout.CENTER, leftPanel);
         frame.add(BorderLayout.SOUTH, bottomBar);
         frame.add(BorderLayout.NORTH, topMenuBar);
-        frame.add(BorderLayout.EAST, rightBackground);
+        frame.add(BorderLayout.EAST, rightPanel);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        
+        return frame;
 	}
 }
