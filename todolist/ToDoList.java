@@ -239,6 +239,13 @@ public class ToDoList {
         newList.setPreferredSize(new Dimension(200, 50));
         newList.setFont(new Font("Arial", Font.PLAIN, 30));
         fileButton.add(newList);
+		newList.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                taskList.tasks.clear();
+            }
+        });
         
         //save menu option
         JMenuItem save = new JMenuItem("Save");
