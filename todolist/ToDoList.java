@@ -332,7 +332,7 @@ public class ToDoList {
 	
 	static void print()
 	{
-		File file = new File("D:/data/report.txt");
+		File file = new File("report.txt");
 
         FileWriter wr;
         BufferedWriter bw;
@@ -473,7 +473,7 @@ public class ToDoList {
         		taskList.remove(taskList.tasks.indexOf(selectedTask));
         		
         		if (taskList.size() != 0)
-        			selectedTask = taskList.get(index);
+        			selectedTask = taskList.get(0);
         		else
         			selectedTask = new Task();
         		
