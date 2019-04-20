@@ -296,8 +296,8 @@ public class ToDoList {
         rightBackground.setOpaque(true);
         rightBackground.setPreferredSize(new Dimension(900, 10));
         
-        JLabel emptyList = new JLabel(" Please enter a task to get started.");
-        emptyList.setFont(new Font("Arial", Font.PLAIN, 50));
+        JLabel emptyList = new JLabel("Please enter a task to get started.");
+        emptyList.setFont(new Font("Arial", Font.PLAIN, 40));
         
         JLabel taskName = new JLabel("Name: " + selectedTask.getName());
         taskName.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -308,16 +308,16 @@ public class ToDoList {
         JLabel taskDesc = new JLabel("Description: " + selectedTask.getDesc());
         taskDesc.setFont(new Font("Arial", Font.PLAIN, 40));
         
+        rightBackground.setLayout(new BoxLayout(rightBackground, BoxLayout.PAGE_AXIS));
+        rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
+        
         if (selectedTask.getName() == "")
         {
-        	rightBackground.setLayout(new BorderLayout());
         	rightBackground.add(emptyList, BorderLayout.NORTH);
         }
         else
         {
-            rightBackground.setLayout(new BoxLayout(rightBackground, BoxLayout.PAGE_AXIS));
-            rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
-        	rightBackground.add(taskName);
+            rightBackground.add(taskName);
         	rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
         	rightBackground.add(taskDesc);
         	rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
