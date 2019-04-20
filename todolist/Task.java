@@ -75,5 +75,10 @@ public class Task
 	{
 		date = sDate;
 	}
+	
+	String toString()
+	{
+		return "Name: " + name + "\nDescription: " + desc + "\nStatus: " + status + "\nPriority: " + priority + "\nDate: " + date + "\n";
+	}
 
 }
