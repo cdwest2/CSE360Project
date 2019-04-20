@@ -4,6 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.BoxLayout;
 import javax.swing.border.LineBorder;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 
 public class ToDoList {
 	
@@ -246,6 +251,35 @@ public class ToDoList {
         JMenuItem print = new JMenuItem("Print");
         print.setPreferredSize(new Dimension(200, 50));
         print.setFont(new Font("Arial", Font.PLAIN, 30));
+		print.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+
+                File file = new File("D:/data/report.txt");
+
+                FileWriter wr;
+                BufferedWriter bw;
+
+                try {
+                    int number = taskList.size();
+                    wr = new FileWriter(file);
+                    bw = new BufferedWriter(wr);
+
+                    for(int i =0; i < number; i++) 
+                    {
+                        String out = taskList.get(i).toString();
+                        bw.write(out);
+                        bw.newLine();
+                    }
+                    bw.close();
+                    wr.close();
+                }
+                catch (IOException e)
+                {
+                    System.err.println("There is something wrong, file coulnt create");
+                    e.printStackTrace();
+                }
+            }
+        });
         fileButton.addSeparator();
         fileButton.add(print);
         
