@@ -58,7 +58,7 @@ public class ToDoList {
 		JPanel priorityDatePanel = new JPanel();
 		JLabel priority = new JLabel("PRIORITY: ");
 		priority.setFont(new Font("Arial", Font.PLAIN, 40));
-		JTextField priorityTextField = new JTextField("#");
+		JTextField priorityTextField = new JTextField("0");
 		priorityTextField.setFont(new Font("Arial", Font.PLAIN, 30));
 		priorityTextField.setPreferredSize(new Dimension(70, 50));
 		priorityDatePanel.add(priority);
@@ -219,6 +219,25 @@ public class ToDoList {
 		errorFrame.setVisible(true);
 	}
 	
+	static void showNoticeMessage(String msg)
+	{
+		JFrame noticeFrame = new JFrame("NOTICE");
+		noticeFrame.setSize(1100, 500);
+		
+		
+		JLabel noticeLabel1 = new JLabel("Notice:");
+		noticeLabel1.setFont(new Font("Arial", Font.PLAIN, 40));
+        
+		JLabel noticeLabel = new JLabel(msg);
+		noticeLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+        
+		noticeFrame.add(BorderLayout.PAGE_START, noticeLabel1);
+		noticeFrame.add(BorderLayout.CENTER, noticeLabel);
+		
+		noticeFrame.setLocationRelativeTo(null);
+		noticeFrame.setVisible(true);
+	}
+	
 	static JList getTaskListData()
 	{
 		DefaultListModel listModel = new DefaultListModel();
@@ -350,11 +369,13 @@ public class ToDoList {
             }
             bw.close();
             wr.close();
+            showNoticeMessage("Printable file 'report.txt' created in application folder.");
         }
         catch (IOException e)
         {
             System.err.println("There is something wrong, file couldn't create");
             e.printStackTrace();
+            showErrorMessage("Creation of 'report.txt' unsuccesful.");
         }
 	}
 	
@@ -420,6 +441,16 @@ public class ToDoList {
         Name.setPreferredSize(new Dimension(130, 50));
         Name.setFont(new Font("Arial", Font.PLAIN, 30));
         sortingButton.add(Name);
+        Name.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		taskList.sortName();
+        		System.out.println("Sorted by name");
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
+        	}
+        });
         
         //date sorting menu option
         JMenuItem Date = new JMenuItem("Date");

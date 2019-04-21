@@ -7,6 +7,7 @@ public class TaskList
 	void add(Task task)
 	{
 		tasks.add(task);
+		
 	}
 	
 	void remove(int index)
