@@ -16,16 +16,13 @@ public class ToDoList {
 	static JFrame frame;
 	static JPanel leftPanel, rightPanel;
 	static Task selectedTask = new Task();
-	//static Task testTask = new Task();
 	static TaskList taskList = new TaskList();
-	char sortingMethod;
 	
+	char sortingMethod;
 	public static void main(String[] args)
 	{
 		frame = initializeHome();
 	}
-	
-	
 	
 	static Task addPanel()
 	{
@@ -252,7 +249,7 @@ public class ToDoList {
         }
         
         list = new JList(listModel);
-        list.setFixedCellHeight(100);
+        list.setFixedCellHeight(75);
         
         return list;
 	}
@@ -287,7 +284,7 @@ public class ToDoList {
         
         JScrollPane listScroller = new JScrollPane(list);
         list.setPreferredSize(new Dimension(200, 50));
-        list.setFont(new Font("Arial", Font.PLAIN, 30));
+        list.setFont(new Font("Arial", Font.PLAIN, 35));
         listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         listScroller.setViewportBorder(new LineBorder(Color.BLACK));
         listScroller.getViewport().add(list);
@@ -316,16 +313,16 @@ public class ToDoList {
         rightBackground.setPreferredSize(new Dimension(900, 10));
         
         JLabel emptyList = new JLabel("Please enter a task to get started.");
-        emptyList.setFont(new Font("Arial", Font.PLAIN, 40));
+        emptyList.setFont(new Font("Arial", Font.PLAIN, 35));
         
-        JLabel taskName = new JLabel("Name: " + selectedTask.getName());
-        taskName.setFont(new Font("Arial", Font.PLAIN, 40));
+        JLabel taskName = new JLabel(selectedTask.getName());
+        taskName.setFont(new Font("Arial", Font.BOLD, 45));
         JLabel taskDate = new JLabel("Date: " + selectedTask.getDate());
-        taskDate.setFont(new Font("Arial", Font.PLAIN, 40));
+        taskDate.setFont(new Font("Arial", Font.PLAIN, 35));
         JLabel taskPrio = new JLabel("Priority: " + String.valueOf(selectedTask.getPriority()));
-        taskPrio.setFont(new Font("Arial", Font.PLAIN, 40));
+        taskPrio.setFont(new Font("Arial", Font.PLAIN, 35));
         JLabel taskDesc = new JLabel("Description: " + selectedTask.getDesc());
-        taskDesc.setFont(new Font("Arial", Font.PLAIN, 40));
+        taskDesc.setFont(new Font("Arial", Font.PLAIN, 35));
         
         rightBackground.setLayout(new BoxLayout(rightBackground, BoxLayout.PAGE_AXIS));
         rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
@@ -388,7 +385,6 @@ public class ToDoList {
 
         //Creating the Top Menu Bar and File Button
         JMenuBar topMenuBar = new JMenuBar();
-        topMenuBar.setLayout( new FlowLayout(FlowLayout.LEFT, 20, 0) );
         
         //OPTIONS menu
         JMenu fileButton = new JMenu("OPTIONS");
@@ -447,8 +443,15 @@ public class ToDoList {
         		taskList.sortName();
         		System.out.println("Sorted by name");
         		
+        		if (taskList.size() != 0)
+        			selectedTask = taskList.get(0);
+        		else
+        			selectedTask = new Task();
+        		
         		refreshLeftPanel();
         		refreshRightPanel();
+        		
+        		System.out.println(taskList.get(0).getName());
         	}
         });
         
@@ -479,7 +482,6 @@ public class ToDoList {
         add.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		selectedTask = addPanel();
-        		
         	}
         });
         
@@ -500,7 +502,6 @@ public class ToDoList {
         delete.setFont(new Font("Arial", Font.PLAIN, 30));
         delete.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		int index = taskList.tasks.indexOf(selectedTask);
         		taskList.remove(taskList.tasks.indexOf(selectedTask));
         		
         		if (taskList.size() != 0)
