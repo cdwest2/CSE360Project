@@ -86,8 +86,12 @@ public class ToDoList {
         		text = descTextField.getText();
         		newTask.setDesc(text);
         		
-        		text = priorityTextField.getText();
-        		newTask.setPriority(Integer.parseInt(text));
+        		try
+        		{
+	        		text = priorityTextField.getText();
+	        		newTask.setPriority(Integer.parseInt(text));
+        		
+        		
         		
         		newTask.setStatus(0);
         		
@@ -95,6 +99,12 @@ public class ToDoList {
         		
         		refreshLeftPanel();
         		refreshRightPanel();
+        		}
+        		catch(Exception ex)
+        		
+        		{
+        			showErrorMessage("Please enter a valid integer for priority.");
+        		}
         	}
         });
 		
@@ -220,6 +230,8 @@ public class ToDoList {
         		text = descTextField.getText();
         		task.setDesc(text);
         		
+        		try
+        		{
         		text = priorityTextField.getText();
         		task.setPriority(Integer.parseInt(text));
         		
@@ -231,6 +243,11 @@ public class ToDoList {
         		
         		refreshLeftPanel();
         		refreshRightPanel();
+        		}
+        		catch(Exception ex)
+        		{
+        			showErrorMessage("Please enter a valid integer for priority.");
+        		}
         	}
         });
 		
