@@ -38,7 +38,7 @@ public class TaskList
 				});
 	}
 	
-	void sortName()
+	TaskList sortName(TaskList list)
 	{
 		Collections.sort(tasks, new Comparator<Task>()
 				{			
@@ -49,6 +49,8 @@ public class TaskList
 					}
 				
 				});
+		list.tasks = tasks;
+		return list;
 	}
 	
 	void sortDate()
