@@ -18,8 +18,8 @@ public class ToDoList {
 	static Task selectedTask = new Task();
 	static TaskList taskList = new TaskList();
 	static int status = 0;
+	static char sortingMethod = 'n';
 	
-	char sortingMethod;
 	public static void main(String[] args)
 	{
 		frame = initializeHome();
@@ -172,7 +172,7 @@ public class ToDoList {
         complete.setPreferredSize(new Dimension(175, 50));
         complete.setFont(new Font("Arial", Font.PLAIN, 30));
         statusButton.add(complete);
-        inProg.addActionListener(new ActionListener()
+        complete.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent arg0)
             {
@@ -295,6 +295,26 @@ public class ToDoList {
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(-1);
         
+        switch (sortingMethod)
+        {
+        case 'n':
+        {
+        	taskList = taskList.sortName(taskList);
+        	break;
+        }
+        case 'd':
+        {
+        	taskList = taskList.sortDate(taskList);
+        	break;
+        }
+        case 'p':
+        {
+        	taskList = taskList.sortPriority(taskList);
+        	break;
+        }
+        }
+        
+        
         for(int i = 0; i < taskList.size(); i++)
         {
         	listModel.addElement("  " + (i+1) + ") " + taskList.get(i).getName());
@@ -302,6 +322,9 @@ public class ToDoList {
         
         list = new JList(listModel);
         list.setFixedCellHeight(75);
+        
+        
+        
         
         return list;
 	}
@@ -392,7 +415,7 @@ public class ToDoList {
         }
         case 2:
         {
-        	taskStatus = new JLabel("Status: Not Started");
+        	taskStatus = new JLabel("Status: Completed");
         	break;
         }
         }
@@ -516,7 +539,7 @@ public class ToDoList {
         Name.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		taskList = taskList.sortName(taskList);
+        		sortingMethod = 'n';
         		System.out.println("Sorted by name");
         		
         		if (taskList.size() != 0)
@@ -537,7 +560,7 @@ public class ToDoList {
         Date.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		taskList = taskList.sortDate(taskList);
+        		sortingMethod = 'd';
         		System.out.println("Sorted by date");
         		
         		if (taskList.size() != 0)
@@ -559,7 +582,7 @@ public class ToDoList {
         Priority.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		taskList = taskList.sortPriority(taskList);
+        		sortingMethod = 'p';
         		System.out.println("Sorted by priority");
         		
         		if (taskList.size() != 0)
