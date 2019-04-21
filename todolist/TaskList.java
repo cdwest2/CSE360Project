@@ -25,7 +25,7 @@ public class TaskList
 		return tasks.get(index);
 	}
 	
-	void sortPriority()
+	TaskList sortPriority(TaskList list)
 	{
 		Collections.sort(tasks, new Comparator<Task>()
 				{			
@@ -36,6 +36,8 @@ public class TaskList
 					}
 				
 				});
+		list.tasks = tasks;
+		return list;
 	}
 	
 	TaskList sortName(TaskList list)
@@ -53,7 +55,7 @@ public class TaskList
 		return list;
 	}
 	
-	void sortDate()
+	TaskList sortDate(TaskList list)
 	{
 		Collections.sort(tasks, new Comparator<Task>()
 				{			
@@ -64,6 +66,8 @@ public class TaskList
 					}
 				
 				});
+		list.tasks = tasks;
+		return list;
 	}
 	
 }

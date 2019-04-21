@@ -17,6 +17,7 @@ public class ToDoList {
 	static JPanel leftPanel, rightPanel;
 	static Task selectedTask = new Task();
 	static TaskList taskList = new TaskList();
+	static int status = 0;
 	
 	char sortingMethod;
 	public static void main(String[] args)
@@ -61,11 +62,11 @@ public class ToDoList {
 		priorityDatePanel.add(priority);
 		priorityDatePanel.add(priorityTextField);
 		
-		JLabel date = new JLabel("          DATE: ");
+		JLabel date = new JLabel("  DUE DATE: ");
 		date.setFont(new Font("Arial", Font.PLAIN, 40));
 		JTextField dateTextField = new JTextField("YYYY MM DD");
 		dateTextField.setFont(new Font("Arial", Font.PLAIN, 30));
-		dateTextField.setPreferredSize(new Dimension(400, 50));
+		dateTextField.setPreferredSize(new Dimension(395, 50));
 		priorityDatePanel.add(date);
 		priorityDatePanel.add(dateTextField);
 		
@@ -136,24 +137,72 @@ public class ToDoList {
 		descPanel.add(desc);
 		descPanel.add(descTextField);
 		
-		JPanel priorityDatePanel = new JPanel();
+		JMenuBar bar = new JMenuBar();
+		JMenu statusButton = new JMenu("STATUS");
+        statusButton.setPreferredSize(new Dimension(175, 50));
+        statusButton.setFont(new Font("Arial", Font.PLAIN, 40));
+        
+        JMenuItem notStarted = new JMenuItem("Not Started");
+        notStarted.setPreferredSize(new Dimension(175, 50));
+        notStarted.setFont(new Font("Arial", Font.PLAIN, 30));
+        statusButton.add(notStarted);
+        notStarted.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                status = 0;
+            }
+        });
+        
+        
+        JMenuItem inProg = new JMenuItem("In Progress");
+        inProg.setPreferredSize(new Dimension(175, 50));
+        inProg.setFont(new Font("Arial", Font.PLAIN, 30));
+        statusButton.add(inProg);
+        inProg.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                status = 1;
+            }
+        });
+        
+        //save menu option
+        JMenuItem complete = new JMenuItem("Completed");
+        complete.setPreferredSize(new Dimension(175, 50));
+        complete.setFont(new Font("Arial", Font.PLAIN, 30));
+        statusButton.add(complete);
+        inProg.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                status = 2;
+            }
+        });
+        bar.add(statusButton);
+		                              
+		JPanel priorityStatusPanel = new JPanel();
+		//priorityStatusPanel.setLayout(new BoxLayout(priorityStatusPanel, BoxLayout.X_AXIS));
 		JLabel priority = new JLabel("PRIORITY: ");
 		priority.setFont(new Font("Arial", Font.PLAIN, 40));
 		String priorityString = Integer.toString(task.getPriority());
 		JTextField priorityTextField = new JTextField(priorityString);
 		priorityTextField.setFont(new Font("Arial", Font.PLAIN, 30));
-		priorityTextField.setPreferredSize(new Dimension(70, 50));
-		priorityDatePanel.add(priority);
-		priorityDatePanel.add(priorityTextField);
+		priorityTextField.setPreferredSize(new Dimension(500, 50));
+		priorityStatusPanel.add(priority);
+		priorityStatusPanel.add(priorityTextField);
+		priorityStatusPanel.add(Box.createRigidArea(new Dimension(30, 0)));
+		priorityStatusPanel.add(bar);
 		
-		JLabel date = new JLabel("          DATE: ");
+		JPanel datePanel = new JPanel();
+		JLabel date = new JLabel("DUE DATE: ");
 		date.setFont(new Font("Arial", Font.PLAIN, 40));
 		String dateString = task.getDate();
 		JTextField dateTextField = new JTextField(dateString);
 		dateTextField.setFont(new Font("Arial", Font.PLAIN, 30));
-		dateTextField.setPreferredSize(new Dimension(400, 50));
-		priorityDatePanel.add(date);
-		priorityDatePanel.add(dateTextField);
+		dateTextField.setPreferredSize(new Dimension(700, 50));
+		datePanel.add(date);
+		datePanel.add(dateTextField);
 		
 		JButton editTaskButton = new JButton("Save Task");
 		editTaskButton.setPreferredSize(new Dimension(900, 60));
@@ -174,7 +223,8 @@ public class ToDoList {
         		text = priorityTextField.getText();
         		task.setPriority(Integer.parseInt(text));
         		
-        		task.setStatus(0);
+        		task.setStatus(status);
+        		status = 0;
         		
         		taskList.remove(index);
         		taskList.add(task);
@@ -187,7 +237,9 @@ public class ToDoList {
 		wholePan.add(Box.createRigidArea(new Dimension(1, 20)));
 		wholePan.add(namePanel);
 		wholePan.add(descPanel);
-		wholePan.add(priorityDatePanel);
+		wholePan.add(datePanel);
+		wholePan.add(priorityStatusPanel);
+		
 		
 		editFrame.add(wholePan);
 		editFrame.add(BorderLayout.SOUTH, editTaskButton);
@@ -324,6 +376,28 @@ public class ToDoList {
         JLabel taskDesc = new JLabel("Description: " + selectedTask.getDesc());
         taskDesc.setFont(new Font("Arial", Font.PLAIN, 35));
         
+        JLabel taskStatus = new JLabel();
+        switch(selectedTask.getStatus())
+        {
+        case 0:
+        {
+        	taskStatus = new JLabel("Status: Not Started");
+        	break;
+            
+        }
+        case 1:
+        {
+        	taskStatus = new JLabel("Status: In Progress");
+        	break;
+        }
+        case 2:
+        {
+        	taskStatus = new JLabel("Status: Not Started");
+        	break;
+        }
+        }
+        taskStatus.setFont(new Font("Arial", Font.PLAIN, 35));
+        
         rightBackground.setLayout(new BoxLayout(rightBackground, BoxLayout.PAGE_AXIS));
         rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
         
@@ -340,6 +414,8 @@ public class ToDoList {
             rightBackground.add(taskPrio);
             rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
             rightBackground.add(taskDate);
+            rightBackground.add(Box.createRigidArea(new Dimension(10, 20)));
+            rightBackground.add(taskStatus);
         }
         
         
@@ -450,8 +526,6 @@ public class ToDoList {
         		
         		refreshLeftPanel();
         		refreshRightPanel();
-        		
-        		//System.out.println(taskList.get(0).getName());
         	}
         });
         
@@ -463,7 +537,16 @@ public class ToDoList {
         Date.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		//Sory by date code
+        		taskList = taskList.sortDate(taskList);
+        		System.out.println("Sorted by date");
+        		
+        		if (taskList.size() != 0)
+        			selectedTask = taskList.get(0);
+        		else
+        			selectedTask = new Task();
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
         		
         	}
         });
@@ -476,7 +559,16 @@ public class ToDoList {
         Priority.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		//Sort by priority code
+        		taskList = taskList.sortPriority(taskList);
+        		System.out.println("Sorted by priority");
+        		
+        		if (taskList.size() != 0)
+        			selectedTask = taskList.get(0);
+        		else
+        			selectedTask = new Task();
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
 
         	}
         });
