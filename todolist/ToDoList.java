@@ -440,7 +440,7 @@ public class ToDoList {
         Name.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		taskList.sortName();
+        		taskList = taskList.sortName(taskList);
         		System.out.println("Sorted by name");
         		
         		if (taskList.size() != 0)
@@ -451,7 +451,7 @@ public class ToDoList {
         		refreshLeftPanel();
         		refreshRightPanel();
         		
-        		System.out.println(taskList.get(0).getName());
+        		//System.out.println(taskList.get(0).getName());
         	}
         });
         
