@@ -460,12 +460,26 @@ public class ToDoList {
         Date.setPreferredSize(new Dimension(130, 50));
         Date.setFont(new Font("Arial", Font.PLAIN, 30));
         sortingButton.add(Date);
+        Date.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		//Sory by date code
+        		
+        	}
+        });
         
         //priority sorting menu option
         JMenuItem Priority = new JMenuItem("Priority");
         Priority.setPreferredSize(new Dimension(130, 50));
         Priority.setFont(new Font("Arial", Font.PLAIN, 30));
         sortingButton.add(Priority);
+        Priority.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		//Sort by priority code
+
+        	}
+        });
         
         //Add File Button to Top Menu Bar
         topMenuBar.add(fileButton);
