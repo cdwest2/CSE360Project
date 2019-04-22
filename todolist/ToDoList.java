@@ -10,6 +10,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+
+
 
 public class ToDoList {
 	
@@ -20,9 +27,15 @@ public class ToDoList {
 	static int status = 0;
 	static char sortingMethod = 'n';
 	
+	
 	public static void main(String[] args)
 	{
 		frame = initializeHome();
+		try {
+			read();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	static Task addPanel()
@@ -83,38 +96,27 @@ public class ToDoList {
         		text = nameTextField.getText();
         		newTask.setName(text);
         		
+        		text = descTextField.getText();
+        		newTask.setDesc(text);
+        		
         		try
         		{
-        		
-	        		if(descNotUnique(descTextField.getText(), false, 0))
-	        		{
-	        			throw new ArithmeticException();
-	        		}
-        		
-	        		text = descTextField.getText();
-	        		newTask.setDesc(text);
-        		
 	        		text = priorityTextField.getText();
 	        		newTask.setPriority(Integer.parseInt(text));
         		
-	        		newTask.setStatus(0);
-	        		
-	        		taskList.add(newTask);
-	        		
-	        		refreshLeftPanel();
-	        		refreshRightPanel();
-        		}
-        		catch(NumberFormatException nfe)
-        		{
-        			showErrorMessage("Please enter a valid integer for priority.");
-        		}
-        		catch(ArithmeticException aex)
-        		{
-        			showErrorMessage("Please enter a unique description.");
+        		
+        		
+        		newTask.setStatus(0);
+        		
+        		taskList.add(newTask);
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
         		}
         		catch(Exception ex)
+        		
         		{
-        			showErrorMessage("Something went wrong.");
+        			showErrorMessage("Please enter a valid integer for priority.");
         		}
         	}
         });
@@ -227,7 +229,7 @@ public class ToDoList {
 		
 		JButton editTaskButton = new JButton("Save Task");
 		editTaskButton.setPreferredSize(new Dimension(900, 60));
-        editTaskButton.setFont(new Font("Arial", Font.PLAIN, 40));       
+        editTaskButton.setFont(new Font("Arial", Font.PLAIN, 40));
         editTaskButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		editFrame.dispatchEvent(new WindowEvent(editFrame, WindowEvent.WINDOW_CLOSING));
@@ -237,45 +239,27 @@ public class ToDoList {
         		
         		text = nameTextField.getText();
         		task.setName(text);
+        		
+        		text = descTextField.getText();
+        		task.setDesc(text);
+        		
         		try
         		{
-	        		if(descNotUnique(descTextField.getText(), true, taskList.tasks.indexOf(selectedTask)))
-	        		{
-	        			throw new ArithmeticException();
-	        		}
+        		text = priorityTextField.getText();
+        		task.setPriority(Integer.parseInt(text));
         		
-	        		text = descTextField.getText();
-	    			task.setDesc(text);
-	        		
-	        		text = priorityTextField.getText();
-	        		task.setPriority(Integer.parseInt(text));
-	        		
-	        		task.setStatus(status);
-	        		status = 0;
-	        		
-	        		taskList.remove(index);
-	        		taskList.add(task);
-	        		
-	        		refreshLeftPanel();
-	        		refreshRightPanel();
-        		}
-        		catch(NumberFormatException nfe)
-        		{
-        			showErrorMessage("Please enter a valid integer for priority.");
-        			refreshLeftPanel();
-	        		refreshRightPanel();
-        		}
-        		catch(ArithmeticException aex)
-        		{
-        			showErrorMessage("Please enter a unique description.");
-        			refreshLeftPanel();
-	        		refreshRightPanel();
+        		task.setStatus(status);
+        		status = 0;
+        		
+        		taskList.remove(index);
+        		taskList.add(task);
+        		
+        		refreshLeftPanel();
+        		refreshRightPanel();
         		}
         		catch(Exception ex)
         		{
-        			showErrorMessage("Something went wrong.");
-        			refreshLeftPanel();
-	        		refreshRightPanel();
+        			showErrorMessage("Please enter a valid integer for priority.");
         		}
         	}
         });
@@ -521,6 +505,74 @@ public class ToDoList {
         }
 	}
 	
+	
+	static void read() throws IOException
+	{
+		Path path = Paths.get("save.dat");
+		byte[] dataBin = Files.readAllBytes(path);
+		String dataStr = new String(dataBin);
+		String[] dataArr = dataStr.split("\n");
+		Task tempTask;
+		String tempName;
+		String tempDesc;
+		String tempDate;
+		int tempStatus;
+		int tempPriority;
+		
+		int numTasks = Integer.parseInt(dataArr[0]);
+		for(int i = 1; i <= numTasks; i++)
+		{
+			tempName = dataArr[(i*5)-4];
+			tempDesc = dataArr[(i*5)-3];
+			tempStatus = Integer.parseInt(dataArr[(i*5)-2]);
+			tempPriority = Integer.parseInt(dataArr[(i*5)-1]);
+			tempDate = dataArr[i*5];
+			tempTask = new Task(tempName, tempDesc, tempPriority, tempStatus, tempDate);
+			taskList.add(tempTask);
+		}
+		refreshLeftPanel();
+		refreshRightPanel();
+	}
+	static void save() throws IOException
+	{
+		String targetFile = "save.dat";
+		try (OutputStream output = openFile(targetFile)) {
+            output.write(getBytes((Integer.toString(taskList.size()) + "\n"))); 
+        }
+		for(int i = 0; i < taskList.size(); i++)
+		{
+			try (OutputStream output = openFile(targetFile, true)) {
+	            output.write(getBytes(taskList.get(i).getName()));
+	            output.write(getBytes("\n"));
+	            output.write(getBytes(taskList.get(i).getDesc()));
+	            output.write(getBytes("\n"));
+	            output.write(getBytes(Integer.toString(taskList.get(i).getStatus())));
+	            output.write(getBytes("\n"));
+	            output.write(getBytes(Integer.toString(taskList.get(i).getPriority())));
+	            output.write(getBytes("\n"));
+	            output.write(getBytes(taskList.get(i).getDate())); 
+	            output.write(getBytes("\n"));
+
+
+	        }
+		}
+		showNoticeMessage("Binary file 'save.dat' created in application folder.");
+	}
+	private static byte[] getBytes(String s)
+	{
+        return s.getBytes(StandardCharsets.UTF_8);
+    }
+ 
+    private static BufferedOutputStream openFile(String fileName) throws IOException 
+    {
+        return openFile(fileName, false);
+    }
+ 
+    private static BufferedOutputStream openFile(String fileName, boolean append) throws IOException 
+    {
+        return new BufferedOutputStream(new FileOutputStream(fileName, append));
+    }
+	
 	static JFrame initializeHome()
 	{
 		//Creating the main Frame element
@@ -557,6 +609,15 @@ public class ToDoList {
         JMenuItem save = new JMenuItem("Save");
         save.setPreferredSize(new Dimension(200, 50));
         save.setFont(new Font("Arial", Font.PLAIN, 30));
+        save.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+					save();
+				} catch (IOException e) {
+					
+				}
+            }
+        });
         fileButton.addSeparator();
         fileButton.add(save);
         
@@ -690,7 +751,6 @@ public class ToDoList {
         });
         
         
-        
         //Add Task Buttons to Bottom Panel
         bottomBar.add(add);
         bottomBar.add(edit);
@@ -710,37 +770,5 @@ public class ToDoList {
         frame.setVisible(true);
         
         return frame;
-	}
-	
-	//Checks if a description given in the parameter is unique in the list. 
-	static boolean descNotUnique(String description, boolean isEdit, int index)
-	{
-		boolean same = false;
-		for(int i = 0; i < taskList.size(); i++)
-		{
-			if((taskList.get(i).getDesc()).contentEquals(description))
-			{
-				if(isEdit)
-				{
-					if(i != index)
-					{
-						same = true;
-					}
-				}
-				else
-				{
-					same = true;
-				}
-			}
-		}
-		
-		if(same)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 	}
 }
