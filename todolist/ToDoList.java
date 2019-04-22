@@ -83,27 +83,38 @@ public class ToDoList {
         		text = nameTextField.getText();
         		newTask.setName(text);
         		
-        		text = descTextField.getText();
-        		newTask.setDesc(text);
-        		
         		try
         		{
+        		
+	        		if(descNotUnique(descTextField.getText()))
+	        		{
+	        			throw new ArithmeticException();
+	        		}
+        		
+	        		text = descTextField.getText();
+	        		newTask.setDesc(text);
+        		
 	        		text = priorityTextField.getText();
 	        		newTask.setPriority(Integer.parseInt(text));
         		
-        		
-        		
-        		newTask.setStatus(0);
-        		
-        		taskList.add(newTask);
-        		
-        		refreshLeftPanel();
-        		refreshRightPanel();
+	        		newTask.setStatus(0);
+	        		
+	        		taskList.add(newTask);
+	        		
+	        		refreshLeftPanel();
+	        		refreshRightPanel();
         		}
-        		catch(Exception ex)
-        		
+        		catch(NumberFormatException nfe)
         		{
         			showErrorMessage("Please enter a valid integer for priority.");
+        		}
+        		catch(ArithmeticException aex)
+        		{
+        			showErrorMessage("Please enter a unique description.");
+        		}
+        		catch(Exception ex)
+        		{
+        			showErrorMessage("Something went wrong.");
         		}
         	}
         });
@@ -226,27 +237,39 @@ public class ToDoList {
         		
         		text = nameTextField.getText();
         		task.setName(text);
-        		
-        		text = descTextField.getText();
-        		task.setDesc(text);
-        		
         		try
         		{
-        		text = priorityTextField.getText();
-        		task.setPriority(Integer.parseInt(text));
+	        		if(descNotUniqueEdit(descTextField.getText(), taskList.tasks.indexOf(selectedTask)))
+	        		{
+	        			throw new ArithmeticException();
+	        		}
         		
-        		task.setStatus(status);
-        		status = 0;
-        		
-        		taskList.remove(index);
-        		taskList.add(task);
-        		
-        		refreshLeftPanel();
-        		refreshRightPanel();
+	        		text = descTextField.getText();
+	    			task.setDesc(text);
+	        		
+	        		text = priorityTextField.getText();
+	        		task.setPriority(Integer.parseInt(text));
+	        		
+	        		task.setStatus(status);
+	        		status = 0;
+	        		
+	        		taskList.remove(index);
+	        		taskList.add(task);
+	        		
+	        		refreshLeftPanel();
+	        		refreshRightPanel();
+        		}
+        		catch(NumberFormatException nfe)
+        		{
+        			showErrorMessage("Please enter a valid integer for priority.");
+        		}
+        		catch(ArithmeticException aex)
+        		{
+        			showErrorMessage("Please enter a unique description.");
         		}
         		catch(Exception ex)
         		{
-        			showErrorMessage("Please enter a valid integer for priority.");
+        			showErrorMessage("Something went wrong.");
         		}
         	}
         });
@@ -681,5 +704,47 @@ public class ToDoList {
         frame.setVisible(true);
         
         return frame;
+	}
+	
+	//Checks if a description given in the parameter is unique in the list. 
+	static boolean descNotUnique(String description)
+	{
+		boolean same = false;
+		for(int i = 0; i < taskList.size(); i++)
+		{
+			if((taskList.get(i).getDesc()).contentEquals(description))
+			{
+				same = true;
+			}
+		}
+		
+		if(same)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	static boolean descNotUniqueEdit(String description, int index)
+	{
+		boolean same = false;
+		for(int i = 0; i < taskList.size(); i++)
+		{
+			if((taskList.get(i).getDesc()).contentEquals(description) && i != index)
+			{
+				same = true;
+			}
+		}
+		
+		if(same)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
