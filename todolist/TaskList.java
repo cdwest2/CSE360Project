@@ -47,7 +47,7 @@ public class TaskList
 					//sort by name in ascending order
 					public int compare(Task t1, Task t2)
 					{
-						return t1.getName().compareTo(t2.getName());
+						return t1.getName().toUpperCase().compareTo(t2.getName().toUpperCase());
 					}
 				
 				});
