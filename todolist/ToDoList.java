@@ -298,32 +298,7 @@ public class ToDoList {
         	public void actionPerformed(ActionEvent e) {
         		editFrame.dispatchEvent(new WindowEvent(editFrame, WindowEvent.WINDOW_CLOSING));
         		
-				String text = dateTextField.getText();
-				String textArr[] = text.split(" ");
-				int month = Integer.parseInt(textArr[0]);
-				if(month < 1 || month > 12)
-				{
-					showErrorMessage("Please enter a valid date.");
-        			refreshLeftPanel();
-					refreshRightPanel();
-					return; 
-				}
-				int day = Integer.parseInt(textArr[1]);
-				if(day < 1 || day > 31)
-				{
-					showErrorMessage("Please enter a valid date.");
-        			refreshLeftPanel();
-					refreshRightPanel();
-					return; 
-				}
-				int year = Integer.parseInt(textArr[2]);
-				if(year < -9999 || year > 9999)
-				{
-					showErrorMessage("Please enter a valid date.");
-        			refreshLeftPanel();
-					refreshRightPanel(); 
-					return;
-				}
+        		String text = dateTextField.getText();
         		task.setDate(text);
         		
         		text = nameTextField.getText();
