@@ -31,7 +31,6 @@ public class ToDoList {
 		try {
 			read();
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	
