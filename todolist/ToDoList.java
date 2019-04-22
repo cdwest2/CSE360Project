@@ -89,39 +89,39 @@ public class ToDoList {
 				String rawText = dateTextField.getText();
 				String textArr[] = rawText.split(" ");
 				String month = "";
-				if(textArr[0].equals(Integer.toString(1)))
+				if(textArr[0].equals("1") || textArr[0].equals("01"))
 				{
 					month = "January";
 				}
-				if(textArr[0].equals(Integer.toString(2)))
+				if(textArr[0].equals("2") || textArr[0].equals("02"))
 				{
 					month = "February";
 				}
-				if(textArr[0].equals(Integer.toString(3)))
+				if(textArr[0].equals("3") || textArr[0].equals("03"))
 				{
 					month = "March";
 				}
-				if(textArr[0].equals(Integer.toString(4)))
+				if(textArr[0].equals("4") || textArr[0].equals("04"))
 				{
 					month = "April";
 				}
-				if(textArr[0].equals(Integer.toString(5)))
+				if(textArr[0].equals("5") || textArr[0].equals("05"))
 				{
 					month = "May";
 				}
-				if(textArr[0].equals(Integer.toString(6)))
+				if(textArr[0].equals("6") || textArr[0].equals("06"))
 				{
 					month = "June";
 				}
-				if(textArr[0].equals(Integer.toString(7)))
+				if(textArr[0].equals("7") || textArr[0].equals("07"))
 				{
 					month = "July";
 				}
-				if(textArr[0].equals(Integer.toString(8)))
+				if(textArr[0].equals("8") || textArr[0].equals("08"))
 				{
 					month = "August";
 				}
-				if(textArr[0].equals(Integer.toString(9)))
+				if(textArr[0].equals("9") || textArr[0].equals("09"))
 				{
 					month = "September";
 				}
