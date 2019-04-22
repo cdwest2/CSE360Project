@@ -86,7 +86,7 @@ public class ToDoList {
         		try
         		{
         		
-	        		if(descNotUnique(descTextField.getText()))
+	        		if(descNotUnique(descTextField.getText(), false, 0))
 	        		{
 	        			throw new ArithmeticException();
 	        		}
@@ -227,7 +227,7 @@ public class ToDoList {
 		
 		JButton editTaskButton = new JButton("Save Task");
 		editTaskButton.setPreferredSize(new Dimension(900, 60));
-        editTaskButton.setFont(new Font("Arial", Font.PLAIN, 40));
+        editTaskButton.setFont(new Font("Arial", Font.PLAIN, 40));       
         editTaskButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		editFrame.dispatchEvent(new WindowEvent(editFrame, WindowEvent.WINDOW_CLOSING));
@@ -239,7 +239,7 @@ public class ToDoList {
         		task.setName(text);
         		try
         		{
-	        		if(descNotUniqueEdit(descTextField.getText(), taskList.tasks.indexOf(selectedTask)))
+	        		if(descNotUnique(descTextField.getText(), true, taskList.tasks.indexOf(selectedTask)))
 	        		{
 	        			throw new ArithmeticException();
 	        		}
@@ -262,14 +262,20 @@ public class ToDoList {
         		catch(NumberFormatException nfe)
         		{
         			showErrorMessage("Please enter a valid integer for priority.");
+        			refreshLeftPanel();
+	        		refreshRightPanel();
         		}
         		catch(ArithmeticException aex)
         		{
         			showErrorMessage("Please enter a unique description.");
+        			refreshLeftPanel();
+	        		refreshRightPanel();
         		}
         		catch(Exception ex)
         		{
         			showErrorMessage("Something went wrong.");
+        			refreshLeftPanel();
+	        		refreshRightPanel();
         		}
         	}
         });
@@ -707,34 +713,24 @@ public class ToDoList {
 	}
 	
 	//Checks if a description given in the parameter is unique in the list. 
-	static boolean descNotUnique(String description)
+	static boolean descNotUnique(String description, boolean isEdit, int index)
 	{
 		boolean same = false;
 		for(int i = 0; i < taskList.size(); i++)
 		{
 			if((taskList.get(i).getDesc()).contentEquals(description))
 			{
-				same = true;
-			}
-		}
-		
-		if(same)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	static boolean descNotUniqueEdit(String description, int index)
-	{
-		boolean same = false;
-		for(int i = 0; i < taskList.size(); i++)
-		{
-			if((taskList.get(i).getDesc()).contentEquals(description) && i != index)
-			{
-				same = true;
+				if(isEdit)
+				{
+					if(i != index)
+					{
+						same = true;
+					}
+				}
+				else
+				{
+					same = true;
+				}
 			}
 		}
 		
