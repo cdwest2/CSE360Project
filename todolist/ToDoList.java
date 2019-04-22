@@ -544,7 +544,7 @@ public class ToDoList {
 	
 	static void read() throws IOException
 	{
-		Path path = Paths.get("save.dat");
+		Path path = Paths.get("save.bin");
 		byte[] dataBin = Files.readAllBytes(path);
 		String dataStr = new String(dataBin);
 		String[] dataArr = dataStr.split("\n");
@@ -572,7 +572,7 @@ public class ToDoList {
 	}
 	static void save() throws IOException
 	{
-		String targetFile = "save.dat";
+		String targetFile = "save.bin";
 		try (OutputStream output = openFile(targetFile)) {
             output.write(getBytes((Integer.toString(taskList.size()) + "\n"))); 
         }
@@ -591,7 +591,7 @@ public class ToDoList {
 	            output.write(getBytes("\n"));
 	        }
 		}
-		showNoticeMessage("Binary file 'save.dat' updated in application folder.");
+		showNoticeMessage("Binary file 'save.bin' updated in application folder.");
 	}
 	private static byte[] getBytes(String s)
 	{
