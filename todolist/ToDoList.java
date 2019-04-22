@@ -88,7 +88,7 @@ public class ToDoList {
         		
         		String rawText = dateTextField.getText();
         		String textArr[] = rawText.split(" ");
-        		String text = textArr[2] + " " + textArr[0] + " " + textArr[1];
+        		String text = textArr[0] + " " + textArr[1] + " " + textArr[2];
         		newTask.setDate(text);
         		
         		text = nameTextField.getText();
