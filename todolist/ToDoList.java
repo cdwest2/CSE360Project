@@ -73,7 +73,7 @@ public class ToDoList {
 		
 		JLabel date = new JLabel("  DUE DATE: ");
 		date.setFont(new Font("Arial", Font.PLAIN, 40));
-		JTextField dateTextField = new JTextField("YYYY MM DD");
+		JTextField dateTextField = new JTextField("MM DD YYYY");
 		dateTextField.setFont(new Font("Arial", Font.PLAIN, 30));
 		dateTextField.setPreferredSize(new Dimension(395, 50));
 		priorityDatePanel.add(date);
@@ -88,7 +88,7 @@ public class ToDoList {
         		
         		String rawText = dateTextField.getText();
         		String textArr[] = rawText.split(" ");
-        		String text = textArr[1] + "/" + textArr[2] + "/" + textArr[0];
+        		String text = textArr[2] + " " + textArr[0] + " " + textArr[1];
         		newTask.setDate(text);
         		
         		text = nameTextField.getText();
@@ -101,12 +101,18 @@ public class ToDoList {
 	        		{
 	        			throw new ArithmeticException();
 	        		}
+	        		
+	        		
         		
 	        		text = descTextField.getText();
 	        		newTask.setDesc(text);
         		
-	        		text = priorityTextField.getText();
-	        		newTask.setPriority(Integer.parseInt(text));
+	        		int priority = Integer.parseInt(priorityTextField.getText());
+	        		while(priorityNotUnique(priority, false, 0))
+	        		{
+	        			priority++;
+	        		}
+	        		newTask.setPriority(priority);
         		
 	        		newTask.setStatus(0);
 	        		
@@ -250,7 +256,7 @@ public class ToDoList {
         		task.setName(text);
         		try
         		{
-	        		if(descNotUnique(descTextField.getText(), true, taskList.tasks.indexOf(selectedTask)))
+	        		if(descNotUnique(descTextField.getText(), true, index))
 	        		{
 	        			throw new ArithmeticException();
 	        		}
@@ -258,8 +264,12 @@ public class ToDoList {
 	        		text = descTextField.getText();
 	    			task.setDesc(text);
 	        		
-	        		text = priorityTextField.getText();
-	        		task.setPriority(Integer.parseInt(text));
+	    			int priority = Integer.parseInt(priorityTextField.getText());
+	        		while(priorityNotUnique(priority, true, index))
+	        		{
+	        			priority++;
+	        		}
+	        		task.setPriority(priority);
 	        		
 	        		task.setStatus(status);
 	        		status = 0;
@@ -309,11 +319,11 @@ public class ToDoList {
 	static void showErrorMessage(String msg)
 	{
 		JFrame errorFrame = new JFrame("ERROR");
-		errorFrame.setSize(1100, 500);
+		errorFrame.setSize(800, 300);
 		
 		
 		JLabel errorLabel1 = new JLabel("Sorry, you have encountered an error:");
-		errorLabel1.setFont(new Font("Arial", Font.PLAIN, 40));
+		errorLabel1.setFont(new Font("Arial", Font.BOLD, 40));
         
 		JLabel errorLabel = new JLabel(msg);
 		errorLabel.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -328,11 +338,11 @@ public class ToDoList {
 	static void showNoticeMessage(String msg)
 	{
 		JFrame noticeFrame = new JFrame("NOTICE");
-		noticeFrame.setSize(1100, 500);
+		noticeFrame.setSize(1100, 300);
 		
 		
 		JLabel noticeLabel1 = new JLabel("Notice:");
-		noticeLabel1.setFont(new Font("Arial", Font.PLAIN, 40));
+		noticeLabel1.setFont(new Font("Arial", Font.BOLD, 40));
         
 		JLabel noticeLabel = new JLabel(msg);
 		noticeLabel.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -556,6 +566,7 @@ public class ToDoList {
 			tempTask = new Task(tempName, tempDesc, tempPriority, tempStatus, tempDate);
 			taskList.add(tempTask);
 		}
+		selectedTask = taskList.get(0);
 		refreshLeftPanel();
 		refreshRightPanel();
 	}
@@ -578,11 +589,9 @@ public class ToDoList {
 	            output.write(getBytes("\n"));
 	            output.write(getBytes(taskList.get(i).getDate())); 
 	            output.write(getBytes("\n"));
-
-
 	        }
 		}
-		showNoticeMessage("Binary file 'save.dat' created in application folder.");
+		showNoticeMessage("Binary file 'save.dat' updated in application folder.");
 	}
 	private static byte[] getBytes(String s)
 	{
@@ -806,6 +815,37 @@ public class ToDoList {
 		for(int i = 0; i < taskList.size(); i++)
 		{
 			if((taskList.get(i).getDesc()).contentEquals(description))
+			{
+				if(isEdit)
+				{
+					if(i != index)
+					{
+						same = true;
+					}
+				}
+				else
+				{
+					same = true;
+				}
+			}
+		}
+		
+		if(same)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	static boolean priorityNotUnique(int priority, boolean isEdit, int index)
+	{
+		boolean same = false;
+		for(int i = 0; i < taskList.size(); i++)
+		{
+			if(taskList.get(i).getPriority() == priority)
 			{
 				if(isEdit)
 				{
