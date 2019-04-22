@@ -560,8 +560,8 @@ public class ToDoList {
 		{
 			tempName = dataArr[(i*5)-4];
 			tempDesc = dataArr[(i*5)-3];
-			tempStatus = Integer.parseInt(dataArr[(i*5)-2]);
-			tempPriority = Integer.parseInt(dataArr[(i*5)-1]);
+			tempStatus = Integer.parseInt(dataArr[(i*5)-1]);
+			tempPriority = Integer.parseInt(dataArr[(i*5)-2]);
 			tempDate = dataArr[i*5];
 			tempTask = new Task(tempName, tempDesc, tempPriority, tempStatus, tempDate);
 			taskList.add(tempTask);

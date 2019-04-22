@@ -78,6 +78,21 @@ public class Task
 
 	String printString()
 	{
-		return "Name: " + name + "\nDescription: " + desc + "\nStatus: " + status + "\nPriority: " + priority + "\nDate: " + date + "\n";
+		String output = "";
+		String statusStr = "";
+		if(status == 0)
+		{
+			statusStr = "Not started";
+		}
+		else if(status == 1)
+		{
+			statusStr = "In progress";
+		}
+		else
+		{
+			statusStr = "Complete";
+		}
+		output ="Name: " + name + ". Description: " + desc + ". Status: " + statusStr + ". Priority: " + Integer.toString(priority) + ". Date: " + date + ".\n\n";
+		return output;
 	}
 }
