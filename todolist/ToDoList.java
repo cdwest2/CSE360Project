@@ -87,7 +87,9 @@ public class ToDoList {
         	public void actionPerformed(ActionEvent e) {
         		addFrame.dispatchEvent(new WindowEvent(addFrame, WindowEvent.WINDOW_CLOSING));
         		
-        		String text = dateTextField.getText();
+        		String rawText = dateTextField.getText();
+        		String textArr[] = rawText.split(" ");
+        		String text = textArr[1] + "/" + textArr[2] + "/" + textArr[0];
         		newTask.setDate(text);
         		
         		text = nameTextField.getText();
