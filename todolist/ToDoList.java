@@ -16,8 +16,6 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
-
-
 public class ToDoList {
 	
 	static JFrame frame;
@@ -26,7 +24,6 @@ public class ToDoList {
 	static TaskList taskList = new TaskList();
 	static int status = 0;
 	static char sortingMethod = 'n';
-	
 	
 	public static void main(String[] args)
 	{
@@ -96,27 +93,38 @@ public class ToDoList {
         		text = nameTextField.getText();
         		newTask.setName(text);
         		
-        		text = descTextField.getText();
-        		newTask.setDesc(text);
-        		
         		try
         		{
+        		
+	        		if(descNotUnique(descTextField.getText(), false, 0))
+	        		{
+	        			throw new ArithmeticException();
+	        		}
+        		
+	        		text = descTextField.getText();
+	        		newTask.setDesc(text);
+        		
 	        		text = priorityTextField.getText();
 	        		newTask.setPriority(Integer.parseInt(text));
         		
-        		
-        		
-        		newTask.setStatus(0);
-        		
-        		taskList.add(newTask);
-        		
-        		refreshLeftPanel();
-        		refreshRightPanel();
+	        		newTask.setStatus(0);
+	        		
+	        		taskList.add(newTask);
+	        		
+	        		refreshLeftPanel();
+	        		refreshRightPanel();
         		}
-        		catch(Exception ex)
-        		
+        		catch(NumberFormatException nfe)
         		{
         			showErrorMessage("Please enter a valid integer for priority.");
+        		}
+        		catch(ArithmeticException aex)
+        		{
+        			showErrorMessage("Please enter a unique description.");
+        		}
+        		catch(Exception ex)
+        		{
+        			showErrorMessage("Something went wrong.");
         		}
         	}
         });
@@ -177,7 +185,7 @@ public class ToDoList {
             }
         });
         
-        
+        //status menu options
         JMenuItem inProg = new JMenuItem("In Progress");
         inProg.setPreferredSize(new Dimension(175, 50));
         inProg.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -190,7 +198,7 @@ public class ToDoList {
             }
         });
         
-        //save menu option
+
         JMenuItem complete = new JMenuItem("Completed");
         complete.setPreferredSize(new Dimension(175, 50));
         complete.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -229,7 +237,7 @@ public class ToDoList {
 		
 		JButton editTaskButton = new JButton("Save Task");
 		editTaskButton.setPreferredSize(new Dimension(900, 60));
-        editTaskButton.setFont(new Font("Arial", Font.PLAIN, 40));
+        editTaskButton.setFont(new Font("Arial", Font.PLAIN, 40));       
         editTaskButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		editFrame.dispatchEvent(new WindowEvent(editFrame, WindowEvent.WINDOW_CLOSING));
@@ -239,27 +247,45 @@ public class ToDoList {
         		
         		text = nameTextField.getText();
         		task.setName(text);
-        		
-        		text = descTextField.getText();
-        		task.setDesc(text);
-        		
         		try
         		{
-        		text = priorityTextField.getText();
-        		task.setPriority(Integer.parseInt(text));
+	        		if(descNotUnique(descTextField.getText(), true, taskList.tasks.indexOf(selectedTask)))
+	        		{
+	        			throw new ArithmeticException();
+	        		}
         		
-        		task.setStatus(status);
-        		status = 0;
-        		
-        		taskList.remove(index);
-        		taskList.add(task);
-        		
-        		refreshLeftPanel();
-        		refreshRightPanel();
+	        		text = descTextField.getText();
+	    			task.setDesc(text);
+	        		
+	        		text = priorityTextField.getText();
+	        		task.setPriority(Integer.parseInt(text));
+	        		
+	        		task.setStatus(status);
+	        		status = 0;
+	        		
+	        		taskList.remove(index);
+	        		taskList.add(task);
+	        		
+	        		refreshLeftPanel();
+	        		refreshRightPanel();
+        		}
+        		catch(NumberFormatException nfe)
+        		{
+        			showErrorMessage("Please enter a valid integer for priority.");
+        			refreshLeftPanel();
+	        		refreshRightPanel();
+        		}
+        		catch(ArithmeticException aex)
+        		{
+        			showErrorMessage("Please enter a unique description.");
+        			refreshLeftPanel();
+	        		refreshRightPanel();
         		}
         		catch(Exception ex)
         		{
-        			showErrorMessage("Please enter a valid integer for priority.");
+        			showErrorMessage("Something went wrong.");
+        			refreshLeftPanel();
+	        		refreshRightPanel();
         		}
         	}
         });
@@ -505,7 +531,6 @@ public class ToDoList {
         }
 	}
 	
-	
 	static void read() throws IOException
 	{
 		Path path = Paths.get("save.dat");
@@ -614,7 +639,7 @@ public class ToDoList {
                 try {
 					save();
 				} catch (IOException e) {
-					
+					e.printStackTrace();
 				}
             }
         });
@@ -751,6 +776,7 @@ public class ToDoList {
         });
         
         
+        
         //Add Task Buttons to Bottom Panel
         bottomBar.add(add);
         bottomBar.add(edit);
@@ -770,5 +796,37 @@ public class ToDoList {
         frame.setVisible(true);
         
         return frame;
+	}
+	
+	//Checks if a description given in the parameter is unique in the list. 
+	static boolean descNotUnique(String description, boolean isEdit, int index)
+	{
+		boolean same = false;
+		for(int i = 0; i < taskList.size(); i++)
+		{
+			if((taskList.get(i).getDesc()).contentEquals(description))
+			{
+				if(isEdit)
+				{
+					if(i != index)
+					{
+						same = true;
+					}
+				}
+				else
+				{
+					same = true;
+				}
+			}
+		}
+		
+		if(same)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
