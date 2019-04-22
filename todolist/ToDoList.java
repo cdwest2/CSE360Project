@@ -86,9 +86,58 @@ public class ToDoList {
         	public void actionPerformed(ActionEvent e) {
         		addFrame.dispatchEvent(new WindowEvent(addFrame, WindowEvent.WINDOW_CLOSING));
         		
-        		String rawText = dateTextField.getText();
-        		String textArr[] = rawText.split(" ");
-        		String text = textArr[0] + " " + textArr[1] + " " + textArr[2];
+				String rawText = dateTextField.getText();
+				String textArr[] = rawText.split(" ");
+				String month = "";
+				if(textArr[0].equals(Integer.toString(1)))
+				{
+					month = "January";
+				}
+				if(textArr[0].equals(Integer.toString(2)))
+				{
+					month = "February";
+				}
+				if(textArr[0].equals(Integer.toString(3)))
+				{
+					month = "March";
+				}
+				if(textArr[0].equals(Integer.toString(4)))
+				{
+					month = "April";
+				}
+				if(textArr[0].equals(Integer.toString(5)))
+				{
+					month = "May";
+				}
+				if(textArr[0].equals(Integer.toString(6)))
+				{
+					month = "June";
+				}
+				if(textArr[0].equals(Integer.toString(7)))
+				{
+					month = "July";
+				}
+				if(textArr[0].equals(Integer.toString(8)))
+				{
+					month = "August";
+				}
+				if(textArr[0].equals(Integer.toString(9)))
+				{
+					month = "September";
+				}
+				if(textArr[0].equals(Integer.toString(10)))
+				{
+					month = "October";
+				}
+				if(textArr[0].equals(Integer.toString(11)))
+				{
+					month = "November";
+				}
+				if(textArr[0].equals(Integer.toString(12)))
+				{
+					month = "December";
+				}
+        		String text = month + " " + textArr[1] + ", " + textArr[2];
         		newTask.setDate(text);
         		
         		text = nameTextField.getText();
