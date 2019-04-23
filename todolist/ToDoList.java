@@ -235,7 +235,8 @@ public class ToDoList {
 		JPanel datePanel = new JPanel();
 		JLabel date = new JLabel("DUE DATE: ");
 		date.setFont(new Font("Arial", Font.PLAIN, 40));
-		String dateString = task.getDate();
+		String[] dateArray = task.getDate().split(" ");
+		String dateString = dateArray[1] + " " + dateArray[2] + " " + dateArray[0];
 		JTextField dateTextField = new JTextField(dateString);
 		dateTextField.setFont(new Font("Arial", Font.PLAIN, 30));
 		dateTextField.setPreferredSize(new Dimension(700, 50));
