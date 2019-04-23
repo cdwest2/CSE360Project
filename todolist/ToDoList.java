@@ -73,7 +73,7 @@ public class ToDoList {
 		
 		JLabel date = new JLabel("  DUE DATE: ");
 		date.setFont(new Font("Arial", Font.PLAIN, 40));
-		JTextField dateTextField = new JTextField("MM DD YYYY");
+		JTextField dateTextField = new JTextField("YYYY MM DD");
 		dateTextField.setFont(new Font("Arial", Font.PLAIN, 30));
 		dateTextField.setPreferredSize(new Dimension(395, 50));
 		priorityDatePanel.add(date);
@@ -86,58 +86,8 @@ public class ToDoList {
         	public void actionPerformed(ActionEvent e) {
         		addFrame.dispatchEvent(new WindowEvent(addFrame, WindowEvent.WINDOW_CLOSING));
         		
-				String rawText = dateTextField.getText();
-				String textArr[] = rawText.split(" ");
-				String month = "";
-				if(textArr[0].equals("1") || textArr[0].equals("01"))
-				{
-					month = "January";
-				}
-				if(textArr[0].equals("2") || textArr[0].equals("02"))
-				{
-					month = "February";
-				}
-				if(textArr[0].equals("3") || textArr[0].equals("03"))
-				{
-					month = "March";
-				}
-				if(textArr[0].equals("4") || textArr[0].equals("04"))
-				{
-					month = "April";
-				}
-				if(textArr[0].equals("5") || textArr[0].equals("05"))
-				{
-					month = "May";
-				}
-				if(textArr[0].equals("6") || textArr[0].equals("06"))
-				{
-					month = "June";
-				}
-				if(textArr[0].equals("7") || textArr[0].equals("07"))
-				{
-					month = "July";
-				}
-				if(textArr[0].equals("8") || textArr[0].equals("08"))
-				{
-					month = "August";
-				}
-				if(textArr[0].equals("9") || textArr[0].equals("09"))
-				{
-					month = "September";
-				}
-				if(textArr[0].equals(Integer.toString(10)))
-				{
-					month = "October";
-				}
-				if(textArr[0].equals(Integer.toString(11)))
-				{
-					month = "November";
-				}
-				if(textArr[0].equals(Integer.toString(12)))
-				{
-					month = "December";
-				}
-        		String text = month + " " + textArr[1] + ", " + textArr[2];
+        		String text = dateTextField.getText();
+				
         		newTask.setDate(text);
         		
         		text = nameTextField.getText();
@@ -300,6 +250,7 @@ public class ToDoList {
         		
         		String text = dateTextField.getText();
         		task.setDate(text);
+        		System.out.println(text);
         		
         		text = nameTextField.getText();
         		task.setName(text);
@@ -508,7 +459,9 @@ public class ToDoList {
         
         JLabel taskName = new JLabel(selectedTask.getName());
         taskName.setFont(new Font("Arial", Font.BOLD, 45));
-        JLabel taskDate = new JLabel("Date: " + selectedTask.getDate());
+        
+        
+        JLabel taskDate = new JLabel("Date: " + selectedTask.printDate());
         taskDate.setFont(new Font("Arial", Font.PLAIN, 35));
         JLabel taskPrio = new JLabel("Priority: " + String.valueOf(selectedTask.getPriority()));
         taskPrio.setFont(new Font("Arial", Font.PLAIN, 35));
