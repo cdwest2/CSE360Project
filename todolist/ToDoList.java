@@ -73,7 +73,7 @@ public class ToDoList {
 		
 		JLabel date = new JLabel("  DUE DATE: ");
 		date.setFont(new Font("Arial", Font.PLAIN, 40));
-		JTextField dateTextField = new JTextField("YYYY MM DD");
+		JTextField dateTextField = new JTextField("MM DD YYYY");
 		dateTextField.setFont(new Font("Arial", Font.PLAIN, 30));
 		dateTextField.setPreferredSize(new Dimension(395, 50));
 		priorityDatePanel.add(date);
@@ -86,7 +86,8 @@ public class ToDoList {
         	public void actionPerformed(ActionEvent e) {
         		addFrame.dispatchEvent(new WindowEvent(addFrame, WindowEvent.WINDOW_CLOSING));
         		
-        		String text = dateTextField.getText();
+        		String[] dateArray = dateTextField.getText().split(" ");
+        		String text = dateArray[2] + " " + dateArray[0] + " " + dateArray[1];
 				
         		newTask.setDate(text);
         		
@@ -248,9 +249,10 @@ public class ToDoList {
         	public void actionPerformed(ActionEvent e) {
         		editFrame.dispatchEvent(new WindowEvent(editFrame, WindowEvent.WINDOW_CLOSING));
         		
-        		String text = dateTextField.getText();
+        		String[] dateArray = dateTextField.getText().split(" ");
+        		String text = dateArray[2] + " " + dateArray[0] + " " + dateArray[1];
+				
         		task.setDate(text);
-        		System.out.println(text);
         		
         		text = nameTextField.getText();
         		task.setName(text);
